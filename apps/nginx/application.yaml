@@ -1,0 +1,42 @@
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: Channel
+metadata:
+  name: nginx-app-latest
+  namespace: nginx
+spec:
+  type: GitHub
+  pathname: https://github.com/masanara/acm-example.git
+---
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: nginx-app
+  namespace: nginx
+spec:
+  componentKinds:
+  - group: apps.open-cluster-management.io
+    kind: Subscription
+  descriptor: {}
+  selector:
+    matchExpressions:
+    - key: app
+      operator: In
+      values:
+      - nginx-app
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: Subscription
+metadata:
+  name: nginx-app
+  namespace: nginx
+  labels:
+    app: nginx-app
+  annotations:
+    apps.open-cluster-management.io/github-path: resources/nginx
+spec:
+  channel: nginx/nginx-app-latest
+  placement:
+    placementRef:
+      kind: PlacementRule
+      name: nginx-qa
