@@ -42,8 +42,8 @@ spec:
                       memory: 256Mi
                     max:
                       cpu: 2
-                      memory: 4Gi
+                      memory: 1Gi
                   - type: Pod
                     max:
                       cpu: 4
-                      memory: 8Gi
+                      memory: 1000Mi
